@@ -50,15 +50,77 @@
       var(--bg-deep);
   }
 
-  .bg-grid {
+ /* Safely Contained Sci-Fi Grid */
+  .grid-wrapper {
     position: fixed;
     inset: 0;
     z-index: -1;
+    perspective: 800px;
+    overflow: hidden;
+    pointer-events: none; /* Prevents grid from blocking clicks */
+  }
+
+  .bg-grid {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    left: -50%;
+    top: -10%;
     background-image:
-      linear-gradient(rgba(148, 163, 184, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(148, 163, 184, 0.04) 1px, transparent 1px);
+      linear-gradient(rgba(6, 182, 212, 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(6, 182, 212, 0.3) 1px, transparent 1px);
     background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+    transform: rotateX(60deg);
+    animation: gridMove 3s linear infinite;
+    /* Fades the grid into the horizon */
+    mask-image: linear-gradient(to top, black 10%, transparent 60%); 
+  }
+
+  @keyframes gridMove {
+    0% { transform: rotateX(60deg) translateY(0); }
+    100% { transform: rotateX(60deg) translateY(60px); } /* Must match background-size */
+  }
+	
+ /* Ambient Floating Network */
+  .ambient-network {
+    position: fixed;
+    inset: -10%;
+    width: 120%;
+    height: 120%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.6;
+    animation: driftNetwork 30s linear infinite alternate;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  }
+
+  @keyframes driftNetwork {
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    100% { transform: translate(-3%, -3%) scale(1.05) rotate(2deg); }
+  }
+
+  .ambient-network line {
+    stroke: rgba(148, 163, 184, 0.15); /* Subtle border color */
+    stroke-width: 1.5;
+  }
+
+  .ambient-network circle {
+    fill: var(--accent-2);
+    transform-origin: center;
+    transform-box: fill-box; /* Ensures nodes pulse from their own centers */
+  }
+
+  .ambient-network circle:nth-child(even) {
+    fill: var(--accent);
+  }
+
+  .ambient-network .node-pulse { animation: ambientPulse 4s ease-in-out infinite; }
+  .ambient-network .node-pulse-2 { animation: ambientPulse 4s ease-in-out infinite 1.5s; }
+  .ambient-network .node-pulse-3 { animation: ambientPulse 4s ease-in-out infinite 3s; }
+
+  @keyframes ambientPulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.8); opacity: 1; }
   }
 
   /* Floating orbs */
@@ -765,7 +827,42 @@
 </head>
 <body>
   <div class="bg-mesh"></div>
-  <div class="bg-grid"></div>
+  <div class="grid-wrapper">
+    <div class="bg-grid"></div>
+  </div>
+  <div class="data-streams"></div>
+  <div class="ambient-network">
+    <svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Network Links (Routes) -->
+      <g>
+        <line x1="150" y1="200" x2="350" y2="150" />
+        <line x1="350" y1="150" x2="600" y2="300" />
+        <line x1="600" y1="300" x2="850" y2="250" />
+        <line x1="350" y1="150" x2="450" y2="50" />
+        <line x1="600" y1="300" x2="500" y2="650" />
+        <line x1="500" y1="650" x2="250" y2="750" />
+        <line x1="500" y1="650" x2="750" y2="850" />
+        <line x1="750" y1="850" x2="900" y2="600" />
+        <line x1="850" y1="250" x2="900" y2="600" />
+        <line x1="150" y1="200" x2="100" y2="500" />
+        <line x1="100" y1="500" x2="250" y2="750" />
+        <line x1="100" y1="500" x2="500" y2="650" />
+      </g>
+      <!-- Network Nodes (Hubs) -->
+      <g>
+        <circle cx="150" cy="200" r="5" class="node-pulse" />
+        <circle cx="350" cy="150" r="7" class="node-pulse-2" />
+        <circle cx="600" cy="300" r="6" class="node-pulse-3" />
+        <circle cx="850" cy="250" r="5" class="node-pulse" />
+        <circle cx="450" cy="50"  r="6" class="node-pulse-2" />
+        <circle cx="500" cy="650" r="8" class="node-pulse" />
+        <circle cx="250" cy="750" r="5" class="node-pulse-3" />
+        <circle cx="750" cy="850" r="6" class="node-pulse-2" />
+        <circle cx="900" cy="600" r="5" class="node-pulse" />
+        <circle cx="100" cy="500" r="6" class="node-pulse-3" />
+      </g>
+    </svg>
+  </div>
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
