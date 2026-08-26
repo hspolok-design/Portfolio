@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Md Hamim Sheikh Polok | Transportation Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0a0e17;
+    --bg-card: rgba(16, 24, 40, 0.72);
+    --accent: #3b82f6;
+    --accent-2: #06b6d4;
+    --accent-glow: rgba(59, 130, 246, 0.35);
+    --text: #e8eef7;
+    --text-muted: #94a3b8;
+    --border: rgba(148, 163, 184, 0.12);
+    --success: #34d399;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Outfit', system-ui, sans-serif;
+    background: var(--bg-deep);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Animated mesh gradient background */
+  .bg-mesh {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(59, 130, 246, 0.18), transparent),
+      radial-gradient(ellipse 70% 50% at 80% 20%, rgba(6, 182, 212, 0.12), transparent),
+      radial-gradient(ellipse 60% 40% at 50% 80%, rgba(99, 102, 241, 0.1), transparent),
+      var(--bg-deep);
+  }
+
+  .bg-grid {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(rgba(148, 163, 184, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+  }
+
+  /* Floating orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    z-index: -1;
+    animation: float 18s ease-in-out infinite;
+  }
+  .orb-1 {
+    width: 420px; height: 420px;
+    background: var(--accent);
+    top: -10%; left: -5%;
+  }
+  .orb-2 {
+    width: 320px; height: 320px;
+    background: var(--accent-2);
+    bottom: 10%; right: -8%;
+    animation-delay: -6s;
+  }
+  .orb-3 {
+    width: 280px; height: 280px;
+    background: #6366f1;
+    top: 45%; left: 55%;
+    animation-delay: -12s;
+    opacity: 0.25;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -40px) scale(1.05); }
+    66% { transform: translate(-20px, 20px) scale(0.95); }
+  }
+
+  /* Navigation */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(16px);
+    background: rgba(10, 14, 23, 0.65);
+    border-bottom: 1px solid var(--border);
+    transition: padding 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    padding: 0.7rem 2rem;
+    background: rgba(10, 14, 23, 0.9);
+  }
+
+  .logo {
+    font-weight: 750;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff, var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .logo-img{
+    height: 32px;
+    width: auto;
+    display: block;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.25s;
+    position: relative;
+  }
+
+  /* Mobile nav toggle */
+  .nav-toggle{
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 110;
+    position: relative;
+  }
+  .nav-toggle span{
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--text);
+    margin: 5px 0;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .nav-toggle.active span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.active span:nth-child(2){ opacity: 0; }
+  .nav-toggle.active span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+
+  .nav-backdrop{
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 8, 14, 0.55);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 90;
+  }
+  .nav-backdrop.open{ opacity: 1; pointer-events: auto; }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover {
+    color: var(--text);
+  }
+
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .photo-wrap {
+    position: relative;
+    justify-self: center;
+  }
+
+  .photo-glow{
+    position: absolute;
+    inset: -46px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+    filter: blur(28px);
+    opacity: 0.75;
+    z-index: 0;
+    pointer-events: none;
+    animation: pulseGlow 4.5s ease-in-out infinite;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.08); }
+  }
+
+  .photo-ring-dash{
+    position: absolute;
+    inset: -26px;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(148, 163, 184, 0.35);
+    animation: spinSlow 40s linear infinite;
+    z-index: 0;
+  }
+
+  @keyframes spinSlow { to { transform: rotate(360deg); } }
+
+  .photo-ring {
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--accent), var(--accent-2), #6366f1, var(--accent));
+    animation: spin 8s linear infinite;
+    opacity: 0.7;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .photo-ring::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: var(--bg-deep);
+  }
+
+  .photo {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top center;
+    position: relative;
+    z-index: 1;
+    border: 4px solid rgba(255,255,255,0.08);
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    transition: transform 0.6s cubic-bezier(0.16,0.8,0.24,1), filter 0.6s ease, box-shadow 0.6s ease;
+  }
+
+  .photo-wrap:hover .photo{
+    transform: scale(1.045);
+    filter: saturate(1.15) brightness(1.03);
+    box-shadow: 0 30px 60px -14px rgba(59, 130, 246, 0.45);
+  }
+
+  /* Network dot-matrix accent (replaces floating text chips) */
+  .network-bg {
+    position: absolute;
+    top: -8%; right: -8%;
+    width: 620px; height: 620px;
+    z-index: 0;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .network-bg circle{ fill: var(--accent-2); }
+  .network-bg .n2{ fill: var(--accent); }
+  .network-bg line{ stroke: rgba(148, 163, 184, 0.22); stroke-width: 1; }
+  .network-bg .pulse{
+    animation: netPulse 3.6s ease-in-out infinite;
+    transform-origin: center;
+  }
+  .network-bg .pulse2{ animation-delay: 1.2s; }
+  .network-bg .pulse3{ animation-delay: 2.2s; }
+  @keyframes netPulse{
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.4); }
+  }
+  @media (max-width: 860px){
+    .network-bg{ width: 420px; height: 420px; opacity: 0.35; }
+  }
+
+  .hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.1rem, 5vw, 3.1rem);
+    font-weight: 700;
+    line-height: 1.10;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-content h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .tagline {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+
+  .typing {
+    display: inline-block;
+    border-right: 2px solid var(--accent-2);
+    animation: blink 0.8s step-end infinite;
+    min-height: 1.4em;
+  }
+
+  @keyframes blink {
+    50% { border-color: transparent; }
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+  }
+
+  .badge {
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    color: #93c5fd;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.6rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), #2563eb);
+    color: white;
+    box-shadow: 0 8px 24px var(--accent-glow);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px var(--accent-glow);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(148, 163, 184, 0.3);
+  }
+
+  /* Sections */
+  section {
+    padding: 5.5rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin-bottom: 0.6rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .section-intro {
+    color: var(--text-muted);
+    max-width: 620px;
+    margin-bottom: 2.5rem;
+    font-size: 1.05rem;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.75rem;
+    backdrop-filter: blur(12px);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s, border-color 0.35s;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.4);
+    border-color: rgba(59, 130, 246, 0.25);
+  }
+
+  /* About */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 2rem;
+  }
+
+  .about-text p {
+    margin-bottom: 1.1rem;
+    color: var(--text-muted);
+  }
+
+  .about-text p strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .stat {
+    text-align: center;
+    padding: 1.4rem 1rem;
+  }
+
+  .stat-num {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+  }
+
+  /* Timeline / Education & Experience */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0.5rem; bottom: 0.5rem;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent-2), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2.2rem;
+    padding-left: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem; top: 0.45rem;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+    transform: translateX(-5px);
+  }
+
+  .timeline-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .tl-date {
+    font-size: 0.8rem;
+    color: var(--accent-2);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .tl-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+
+  .tl-org {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .tl-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .tl-desc ul {
+    margin-top: 0.5rem;
+    padding-left: 1.1rem;
+  }
+
+  .tl-desc li {
+    margin-bottom: 0.35rem;
+  }
+
+  /* Research cards */
+  .research-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .research-card .rc-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin-bottom: 0.6rem;
+  }
+
+  .research-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    line-height: 1.35;
+  }
+
+  .research-card p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+
+  /* Skills */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .skill-group h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-2);
+    margin-bottom: 0.85rem;
+    letter-spacing: 0.04em;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .skill-tag {
+    padding: 0.4rem 0.85rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    transition: background 0.25s, border-color 0.25s;
+  }
+
+  .skill-tag:hover {
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  /* Goals */
+  .goals-list {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .goal-item {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .goal-icon {
+    flex-shrink: 0;
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(6,182,212,0.15));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+  }
+
+  .goal-item h4 {
+    font-size: 1.05rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .goal-item p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  /* Contact */
+  .contact-section {
+    text-align: center;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 1.5rem;
+    border-radius: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+
+  .contact-link:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px -10px var(--accent-glow);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  /* Reveal animations */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Mobile */
+  @media (max-width: 860px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 2.5rem;
+    }
+    .photo-wrap { order: -1; }
+    .photo { width: 220px; height: 220px; }
+    .hero-badges, .cta-row { justify-content: center; }
+    .about-grid { grid-template-columns: 1fr; }
+
+    .nav-toggle{ display: block; }
+
+    .nav-links{
+      display: flex;
+      position: fixed;
+      top: 0; right: 0;
+      height: 100vh;
+      width: min(78vw, 320px);
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 1.7rem;
+      padding: 2rem 2.4rem;
+      margin: 0;
+      background: rgba(10, 14, 23, 0.97);
+      border-left: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 105;
+    }
+    .nav-links.open{ transform: translateX(0); }
+    .nav-links li{ width: 100%; }
+    .nav-links a{ font-size: 1.05rem; }
+
+    .network-bg{ opacity: 0.25; }
+  }
+
+  @media (max-width: 520px) {
+    section { padding: 4rem 1.25rem; }
+    .stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="bg-mesh"></div>
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <nav id="nav">
+    <div class="logo">
+	<div class="nav-name"><span class="nav-dot"></span>M. H. S. POLOK</div>
+</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#goals">Goals</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="nav-backdrop" id="navBackdrop"></div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <svg class="network-bg" viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg">
+      <line x1="80" y1="120" x2="260" y2="60"/>
+      <line x1="260" y1="60" x2="460" y2="140"/>
+      <line x1="460" y1="140" x2="580" y2="90"/>
+      <line x1="80" y1="120" x2="180" y2="280"/>
+      <line x1="180" y1="280" x2="260" y2="60"/>
+      <line x1="180" y1="280" x2="360" y2="330"/>
+      <line x1="360" y1="330" x2="460" y2="140"/>
+      <line x1="360" y1="330" x2="420" y2="470"/>
+      <line x1="420" y1="470" x2="560" y2="420"/>
+      <line x1="560" y1="420" x2="580" y2="90"/>
+      <circle class="pulse" cx="80" cy="120" r="5"/>
+      <circle class="n2 pulse2" cx="260" cy="60" r="4"/>
+      <circle class="pulse3" cx="460" cy="140" r="5"/>
+      <circle class="n2" cx="580" cy="90" r="4"/>
+      <circle cx="180" cy="280" r="4"/>
+      <circle class="n2 pulse2" cx="360" cy="330" r="5"/>
+      <circle class="pulse3" cx="420" cy="470" r="4"/>
+      <circle cx="560" cy="420" r="4"/>
+    </svg>
+    <div class="hero-inner">
+      <div class="photo-wrap">
+        <div class="photo-glow"></div>
+        <div class="photo-ring-dash"></div>
+        <div class="photo-ring"></div>
+        <img class="photo" src="assest=Picsart_26-04-17_14-52-39-318.jpg" alt="Md Hamim Sheikh Polok">
+      </div>
+      <div class="hero-content">
+        <h1>Md Hamim Sheikh Polok</span></h1>
+        <p class="tagline">
+          <span class="typing" id="typing"></span>
+        </p>
+        <div class="hero-badges">
+          <span class="badge">Teaching Assistant · BUET</span>
+          <span class="badge">M.Sc. Transportation Engineering</span>
+          <span class="badge">Freight & Logistics</span>
+	<span class="badge">Sustainable Transport System</span>
+	<span class="badge">Sustainable Mobility</span>
+	<span class="badge">Transport Planning</span>
+	<span class="badge">Travel Behavior</span>
+        </div>
+        <div class="cta-row">
+          <a href="#contact" class="btn btn-primary">Get in Touch</a>
+          <a href="#research" class="btn btn-ghost">View Research</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="reveal">
+      <p class="section-label">About Me</p>
+      <h2 class="section-title">Bridging research and real-world mobility</h2>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>
+          I am a civil and transportation engineer and Teaching Assistant at the Department of Civil Engineering, Bangladesh University of Engineering and Technology (BUET). My work sits at the intersection of <strong>travel demand modeling</strong>, <strong>freight trip generation</strong>, and <strong>sustainable urban mobility</strong>—with a strong emphasis on turning field data and statistical insight into decisions that improve how cities move.
+        </p>
+        <p>
+          I completed my B.Sc. in Civil Engineering at Gopalganj Science and Technology University (CGPA 3.53/4.00), with a major in Transportation and a minor in Environment. My undergraduate thesis developed a traditional travel demand model for Khulna Metropolitan City through extensive field surveys, stakeholder engagement, and statistical analysis. That experience shaped my current M.Sc. research at BUET on freight trip generation models and environmentally responsible freight and urban transport planning.
+        </p>
+        <p>
+          Beyond academic research, I contribute to collaborative work on emergency response accessibility in mixed-traffic megacities, hybrid choice modeling in transportation, and curriculum benchmarking for civil engineering programs—always with an eye toward practical, policy-relevant outcomes.
+        </p>
+      </div>
+      <div class="stats">
+        <div class="card stat">
+          <div class="stat-num">3.53</div>
+          <div class="stat-label">B.Sc. CGPA / 4.00 <br> 1st Position out of 64 </div>
+        </div>
+        <div class="card stat">
+          <div class="stat-num">5.00</div>
+          <div class="stat-label">HSC & SSC GPA <br> Secured Board Stipend for Outstanding SSC performance </div>
+        </div>
+        <div class="card stat">
+          <div class="stat-num">BUET</div>
+          <div class="stat-label">Ongoing M.Sc. in Transportation Engineering <br> Teaching Assistant Role Since December 2025</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-num">Khulna</div>
+          <div class="stat-label">Born & Raised <br>A City that I hold in my Heart <br> Based in Bangladesh</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="reveal">
+      <p class="section-label">Education</p>
+      <h2 class="section-title">Academic foundation</h2>
+      <p class="section-intro">A continuous path from strong secondary science results through a focused civil engineering degree to specialized graduate work in transportation at Bangladesh’s leading engineering university.</p>
+    </div>
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <div class="tl-date">Ongoing</div>
+        <div class="tl-title">Master of Science (M.Sc.) in Transportation Engineering</div>
+        <div class="tl-org">Bangladesh University of Engineering and Technology (BUET)</div>
+        <div class="tl-desc">
+          Research focus: Freight Trip Generation (FTG) models and sustainable transportation. Advancing specialized knowledge in freight demand modeling, sustainable mobility strategies, and data-driven transportation planning.
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">Completed · CGPA 3.53 / 4.00</div>
+        <div class="tl-title">Bachelor of Science (B.Sc.) in Civil Engineering</div>
+        <div class="tl-org">Gopalganj Science and Technology University (GSTU), Gopalganj</div>
+        <div class="tl-desc">
+          Major: Transportation · Minor: Environment · Duration: 4 years. Undergraduate thesis: “Development of a Traditional Travel Demand Model in Khulna Metropolitan City”—field surveys, stakeholder consultations, data collection, statistical analysis, and modeling.
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">2017 · GPA 5.00 / 5.00</div>
+        <div class="tl-title">Higher Secondary Certificate (HSC) – Science</div>
+        <div class="tl-org">Govt. M. M. City College, Khulna · Board: Jessore</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">2015 · GPA 5.00 / 5.00</div>
+        <div class="tl-title">Secondary School Certificate (SSC) – Science</div>
+        <div class="tl-org">H. R. H. Prince Aga Khan Secondary School, Khulna · Board: Jessore</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="reveal">
+      <p class="section-label">Professional Experience</p>
+      <h2 class="section-title">Teaching, research & collaboration</h2>
+    </div>
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <div class="tl-date">December 2025 – Present</div>
+        <div class="tl-title">Teaching Assistant</div>
+        <div class="tl-org">Department of Civil Engineering · Bangladesh University of Engineering and Technology (BUET)</div>
+        <div class="tl-desc">
+          <ul>
+            <li>Supporting undergraduate and postgraduate teaching activities within the Civil Engineering Department while contributing to academic and research initiatives.</li>
+            <li>Engaged in advanced research on freight trip generation (FTG) models—data collection, analysis, and modeling techniques that inform sustainable freight and urban transportation planning.</li>
+            <li>Collaborating with faculty and researchers on transportation engineering topics that bridge academic knowledge with practical infrastructure and mobility solutions.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">Collaborative research & academic projects</div>
+        <div class="tl-title">Research Collaborator & Curriculum Benchmarking</div>
+        <div class="tl-org">BUET and multi-institutional teams</div>
+        <div class="tl-desc">
+          <ul>
+            <li>Co-author on work examining excess emergency vehicle travel time and structural station inefficiency in Dhaka using OLS interaction models and K-means clustering in stochastic mixed-traffic networks.</li>
+            <li>Contribution to systematic literature synthesis on Hybrid Choice Models in transportation, linking latent psychological constructs with discrete choice frameworks.</li>
+            <li>Curriculum benchmarking of leading U.S. civil engineering programs (UC Berkeley, UIUC, Georgia Tech, Stanford, UT Austin) against BUET’s structure for undergraduate syllabus upgradation.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section id="research">
+    <div class="reveal">
+      <p class="section-label">Research</p>
+      <h2 class="section-title">Selected research themes</h2>
+      <p class="section-intro">Work that connects rigorous statistical and spatial methods with real operational and policy questions in developing-country and mixed-traffic contexts.</p>
+    </div>
+    <div class="research-grid reveal">
+      <div class="card research-card">
+        <span class="rc-tag">Ongoing M.Sc.</span>
+        <h3>Freight Trip Generation (FTG) Models & Sustainable Transportation</h3>
+        <p>Data-driven analysis and modeling of freight demand with an emphasis on strategies that support efficient and environmentally responsible freight and urban mobility planning at BUET.</p>
+      </div>
+      <div class="card research-card">
+        <span class="rc-tag">Undergraduate Thesis</span>
+        <h3>Traditional Travel Demand Model — Khulna Metropolitan City</h3>
+        <p>Collaborative development of a comprehensive TDM for Khulna through field surveys, stakeholder consultations, systematic data collection, statistical analysis, and modeling—strengthening expertise applicable to real-world infrastructure projects.</p>
+      </div>
+      <div class="card research-card">
+        <span class="rc-tag">Collaborative</span>
+        <h3>Excess Emergency Vehicle Travel Time & Station Inefficiency (Dhaka)</h3>
+        <p>Two-level framework combining multi-interaction OLS and K-means clustering to identify overloaded fire stations and compounding drivers of excess travel time in a stochastic mixed-traffic network without priority protocols.</p>
+      </div>
+      <div class="card research-card">
+        <span class="rc-tag">Literature Synthesis</span>
+        <h3>Hybrid Choice Models in Transportation</h3>
+        <p>Systematic review synthesizing the development, applications, and methodological trajectory of HCMs—linking latent attitudes and perceptions with discrete choice models for more behaviorally realistic policy analysis.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="reveal">
+      <p class="section-label">Technical Skills</p>
+      <h2 class="section-title">Tools I work with</h2>
+    </div>
+    <div class="skills-grid reveal">
+      <div class="card skill-group">
+        <h4>Design & Drafting</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">AutoCAD</span>
+          <span class="skill-tag">ETABS</span>
+        </div>
+      </div>
+      <div class="card skill-group">
+        <h4>GIS & Spatial Analysis</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">ArcGIS</span>
+        </div>
+      </div>
+      <div class="card skill-group">
+        <h4>Modeling & Simulation</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">MATLAB</span>
+          <span class="skill-tag">R</span>
+          <span class="skill-tag">PTV VISSIM</span>
+        </div>
+      </div>
+      <div class="card skill-group">
+        <h4>Programming & Analysis</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">C Programming</span>
+          <span class="skill-tag">Advanced Excel</span>
+          <span class="skill-tag">Microsoft Office Suite</span>
+        </div>
+      </div>
+      <div class="card skill-group">
+        <h4>Languages</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">English (Professional)</span>
+          <span class="skill-tag">Bengali (Native)</span>
+        </div>
+      </div>
+      <div class="card skill-group">
+        <h4>Additional</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Technical Communication</span>
+          <span class="skill-tag">Field Research</span>
+          <span class="skill-tag">Stakeholder Engagement</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GOALS -->
+  <section id="goals">
+    <div class="reveal">
+      <p class="section-label">Future Goals</p>
+      <h2 class="section-title">Where I am headed</h2>
+      <p class="section-intro">I am looking for roles and collaborations where academic rigor and field experience translate into infrastructure and mobility systems that work better for people and cities.</p>
+    </div>
+    <div class="goals-list reveal">
+      <div class="card goal-item">
+        <div class="goal-icon">🚇</div>
+        <div>
+          <h4>Meaningful work in civil & transportation engineering</h4>
+          <p>Contribute to projects that improve infrastructure and urban transport systems in practical, environmentally responsible ways—especially in data-scarce and rapidly urbanizing contexts.</p>
+        </div>
+      </div>
+      <div class="card goal-item">
+        <div class="goal-icon">📊</div>
+        <div>
+          <h4>Advance freight and demand modeling research</h4>
+          <p>Deepen expertise in freight trip generation, travel demand modeling, and hybrid behavioral frameworks so that policy and investment decisions rest on stronger evidence.</p>
+        </div>
+      </div>
+      <div class="card goal-item">
+        <div class="goal-icon">🌍</div>
+        <div>
+          <h4>Grow professionally while delivering impact</h4>
+          <p>Build a career that combines teaching, research, and applied practice—working on solutions that make a genuine difference in how cities and communities move and develop.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact-section">
+    <div class="reveal">
+      <p class="section-label">Contact</p>
+      <h2 class="section-title">Let’s connect</h2>
+      <p class="section-intro" style="margin-left:auto;margin-right:auto;">
+        Open to research collaboration, teaching and industry roles in transportation and civil engineering, and conversations about sustainable mobility in mixed-traffic cities.
+      </p>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:hamimsheikhpolok@gmail.com">
+          <span>✉</span> hamimsheikhpolok@gmail.com
+        </a>
+        <a class="contact-link" href="https://www.facebook.com/share/1BBde5EtGp/" target="_blank" rel="noopener">
+          <span>ⓕ</span> Hamim Sheikh Polok
+        </a>
+        <a class="contact-link" href="https://www.linkedin.com/in/hamimsheikhpolok" target="_blank" rel="noopener">
+          <span>in</span> LinkedIn
+        </a>
+      </div>
+      <p style="margin-top: 2rem; color: var(--text-muted); font-size: 0.9rem;">
+        Dhaka-1000, Bangladesh
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Md Hamim Sheikh Polok · Portfolio crafted with care</p>
+  </footer>
+
+  <script>
+    // Typing effect
+    const phrases = [
+      "Civil & Transportation Engineer",
+      "Teaching Assistant at BUET",
+      "Freight Trip Generation Research",
+      "Sustainable Urban Mobility"
+    ];
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+    const el = document.getElementById("typing");
+
+    function type() {
+      const current = phrases[phraseIndex];
+      if (!deleting) {
+        el.textContent = current.slice(0, charIndex + 1);
+        charIndex++;
+        if (charIndex === current.length) {
+          deleting = true;
+          setTimeout(type, 2200);
+          return;
+        }
+      } else {
+        el.textContent = current.slice(0, charIndex - 1);
+        charIndex--;
+        if (charIndex === 0) {
+          deleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+        }
+      }
+      setTimeout(type, deleting ? 40 : 70);
+    }
+    type();
+
+    // Nav scroll
+    const nav = document.getElementById("nav");
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 40);
+    });
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+    const navBackdrop = document.getElementById("navBackdrop");
+
+    function closeMobileNav() {
+      navToggle.classList.remove("active");
+      navLinks.classList.remove("open");
+      navBackdrop.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+    }
+    function openMobileNav() {
+      navToggle.classList.add("active");
+      navLinks.classList.add("open");
+      navBackdrop.classList.add("open");
+      navToggle.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+    }
+    navToggle.addEventListener("click", () => {
+      navLinks.classList.contains("open") ? closeMobileNav() : openMobileNav();
+    });
+    navBackdrop.addEventListener("click", closeMobileNav);
+    navLinks.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMobileNav));
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 860) closeMobileNav();
+    });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll(".reveal");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+    );
+    reveals.forEach((r) => observer.observe(r));
+  </script>
+</body>
+</html>
