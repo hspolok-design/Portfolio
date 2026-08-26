@@ -469,7 +469,144 @@
     background: rgba(255,255,255,0.05);
     border-color: rgba(148, 163, 184, 0.3);
   }
+/* Scrolling News Ticker */
+  .news-ticker {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 14, 23, 0.85);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.05);
+    display: flex;
+    align-items: center;
+    height: 46px;
+    overflow: hidden;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+  }
 
+  .ticker-label {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 0 1.5rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    position: relative;
+    z-index: 2;
+    box-shadow: 8px 0 20px rgba(0,0,0,0.6);
+  }
+
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: tickerScroll 35s linear infinite;
+  }
+
+  /* Pauses the scrolling when someone hovers over it to read */
+  .news-ticker:hover .ticker-track {
+    animation-play-state: paused;
+  }
+
+  .ticker-content {
+    display: flex;
+    padding-left: 2rem;
+  }
+
+  .ticker-item {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-right: 3rem;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .ticker-item::after {
+    content: '•';
+    color: var(--accent-2);
+    margin-left: 3rem;
+    opacity: 0.5;
+  }
+
+  .ticker-item strong {
+    color: var(--text);
+    font-weight: 600;
+    margin-right: 6px;
+  }
+
+  @keyframes tickerScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  
+  @media (max-width: 860px) {
+    /* Ultra-compact mobile ticker */
+    .news-ticker { 
+      height: 40px; 
+    }
+    .ticker-label { 
+      padding: 0 0.75rem; 
+      font-size: 0.75rem; 
+    }
+    .ticker-item { 
+      font-size: 0.95rem; 
+      margin-right: 2rem; 
+    }
+    .ticker-item::after {
+      margin-left: 2rem;
+    }
+/* Maximum vertical compression for mobile */
+    .hero {
+      min-height: 100svh;
+      padding: 4.5rem 1rem 2.5rem; /* Tighter top/bottom padding */
+    }
+    .hero-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 1rem; /* Reduced gap */
+    }
+    .photo-wrap { order: -1; }
+    
+    /* Shrink photo slightly more */
+    .photo { width: 145px; height: 145px; border-width: 3px; } 
+    
+    /* Shrink typography and margins */
+    .hero-content h1 {
+      font-size: 2.1rem;
+      margin-bottom: 0.2rem;
+    }
+    .tagline {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    /* Compress badges to prevent them from taking up 4 lines */
+    .hero-badges {
+      justify-content: center;
+      gap: 0.35rem;
+      margin-bottom: 1rem;
+    }
+    .badge {
+      padding: 0.25rem 0.6rem;
+      font-size: 0.65rem;
+    }
+    
+    /* Compress buttons */
+    .btn {
+      padding: 0.7rem 1.2rem;
+      font-size: 0.85rem;
+    }
+
+    /* ... keep your existing ultra-compact mobile ticker CSS below this! */
+	  
+  }
   /* Sections */
   section {
     padding: 5.5rem 2rem;
@@ -937,6 +1074,30 @@
         </div>
       </div>
     </div>
+	  <!-- Paste this just above the </header> tag -->
+    <div class="news-ticker">
+      <div class="ticker-label">LATEST UPDATES</div>
+      <div class="ticker-track">
+        
+        <!-- Content Block 1 -->
+        <div class="ticker-content">
+          <span class="ticker-item"><strong>Status:</strong> Currently serving as Teaching Assistant at BUET Dept. of Civil Engineering</span>
+          <span class="ticker-item"><strong>Research:</strong> Preparing manuscript revisions on Hybrid Choice Models for journal publication</span>
+          <span class="ticker-item"><strong>Focus:</strong> Advancing methodologies in Freight Trip Generation and Sustainable Mobility</span>
+          <span class="ticker-item"><strong>Looking Ahead:</strong> Actively seeking PhD program opportunities in the USA and Australia</span>
+        </div>
+
+        <!-- Content Block 2 (Exact Duplicate for Seamless Looping) -->
+        <div class="ticker-content" aria-hidden="true">
+          <span class="ticker-item"><strong>Status:</strong> Currently serving as Teaching Assistant at BUET Dept. of Civil Engineering</span>
+          <span class="ticker-item"><strong>Research:</strong> Preparing manuscript revisions on Hybrid Choice Models for journal publication</span>
+          <span class="ticker-item"><strong>Focus:</strong> Advancing methodologies in Freight Trip Generation and Sustainable Mobility</span>
+          <span class="ticker-item"><strong>Looking Ahead:</strong> Actively seeking PhD program opportunities in the USA and Australia</span>
+        </div>
+
+      </div>
+    </div>
+  </header> <!-- This is your existing closing header tag -->
   </header>
 
   <!-- ABOUT -->
